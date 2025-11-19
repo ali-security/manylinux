@@ -14,6 +14,8 @@ source "${MY_DIR}/build_utils.sh"
 
 CERT_IDENTITY=$1
 CERT_OIDC_ISSUER=$2
+echo "CERT_IDENTITY: ${CERT_IDENTITY}"
+echo "CERT_OIDC_ISSUER: ${CERT_OIDC_ISSUER}"
 CPYTHON_VERSION=$3
 CPYTHON_DOWNLOAD_URL=https://www.python.org/ftp/python
 
