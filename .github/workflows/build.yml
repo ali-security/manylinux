@@ -46,7 +46,7 @@ jobs:
           import os
           import json
           reduced = [
-              ("s390x", "ubuntu-24.04", ("manylinux2014")),
+              ("s390x", "ubuntu-24.04", ("manylinux2014", "manylinux_2_28")),
           ]
           expanded = [{"policy": policy, "platform": platform, "runner": runner} for platform, runner, policies in reduced for policy in policies]
           print(json.dumps(expanded, indent=2))
