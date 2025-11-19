@@ -163,6 +163,10 @@ RUN --mount=type=bind,from=static_clang,target=/tmp/cross-compiler,ro \
 COPY --from=cosign-bin /ko-app/cosign /usr/local/bin/cosign
 COPY build_scripts/build-cpython.sh /opt/_internal/build_scripts/
 
+FROM build_cpython AS build_cpython37
+ARG MANYLINUX_DISABLE_CLANG_FOR_CPYTHON
+RUN --mount=type=bind,from=static_clang,target=/tmp/cross-compiler,ro \
+    /tmp/cross-compiler/entrypoint /opt/_internal/build_scripts/build-cpython.sh lukasz@langa.pl https://github.com/login/oauth 3.7.9
 
 FROM build_cpython AS build_cpython38
 ARG MANYLINUX_DISABLE_CLANG_FOR_CPYTHON
@@ -217,7 +221,8 @@ COPY --from=build_zstd /manylinux-rootfs /
 COPY --from=build_sqlite3 /manylinux-rootfs /
 COPY --from=build_git /manylinux-rootfs /
 COPY build_scripts /opt/_internal/build_scripts/
-RUN --mount=type=bind,target=/build_cpython38,from=build_cpython38 \
+RUN --mount=type=bind,target=/build_cpython37,from=build_cpython37 \
+    --mount=type=bind,target=/build_cpython38,from=build_cpython38 \
     --mount=type=bind,target=/build_cpython39,from=build_cpython39 \
     --mount=type=bind,target=/build_cpython310,from=build_cpython310 \
     --mount=type=bind,target=/build_cpython311,from=build_cpython311 \
